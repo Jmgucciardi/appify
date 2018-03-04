@@ -4,7 +4,10 @@
   "description": "testing new things",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "babel-node src/server",
+    "dev": "babel-node src/server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "next dev"
   },
   "repository": {
     "type": "git",
