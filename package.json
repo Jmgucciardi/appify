@@ -1,0 +1,19 @@
+{
+  "name": "appify",
+  "version": "1.0.0",
+  "description": "testing new things",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jmgucciardi/appify.git"
+  },
+  "author": "Jonathan Gucciardi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jmgucciardi/appify/issues"
+  },
+  "homepage": "https://github.com/Jmgucciardi/appify#readme"
+}
