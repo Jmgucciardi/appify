@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import data from './ServerConfig'
 
-const dev = process.end.NODE_ENV !== 'production'
+const dev = process.env.NODE_ENV !== 'production'
 mongoose.Promise = global.Promise
 
 mongoose.connect(process.env.MONGODB_URI || data.database)
