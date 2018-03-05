@@ -9,6 +9,16 @@ class HomePage extends React.Component {
         }
     }
 
+    static async getInitialProps(context) {
+        const { store, isServer, query, req } = context;
+        if (isServer) {
+            if (isServer) {
+                console.log(req.cookies);
+            }
+        }
+        return { isServer };
+    }
+
     render() {
         return (
             <div>

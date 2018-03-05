@@ -3,6 +3,7 @@ import next from 'next'
 import path from 'path'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 import data from './ServerConfig'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -24,8 +25,8 @@ const nextApp = next({
 
 const handle = nextApp.getRequestHandler()
 
-process.on('unhandled Rejections', (reason, promise) => {
-    console.log(promise)
+process.on('unhandledRejection', (reason, promise) => {
+    console.log('Unhandled Rejections: ', promise)
 })
 
 nextApp.prepare().then(() => {
@@ -33,6 +34,8 @@ nextApp.prepare().then(() => {
 
     app.use(bodyParser())
     app.use(bodyParser.urlencoded({ extended: true }))
+
+    app.use(cookieParser())
 
     app.get('*', (req, res) => {
         return handle(req, res)
@@ -46,7 +49,7 @@ nextApp.prepare().then(() => {
 
     app.listen(data.port, (err) => {
         if (err) {
-            console.log('Error: ', err)
+            throw err
         }
         console.log('Server listening on Port: ', data.port)
     })
