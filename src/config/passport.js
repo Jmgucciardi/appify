@@ -39,19 +39,24 @@ module.exports = (config, passport) => {
             email_Field: 'email',
             passReqToCallback: true
     },
-        (req, res, username, password, done) => {
-            User.findOne({'user.username': username.toLowerCase()}, (err, user) => {
+        (req, username, password, done) => {
+        console.log('BODY: ', req.body)
+            User.findOne({'user.username': username.toLowerCase() }, (err, user) => {
+                console.log('USER: ', user)
                 if (err) {
+                    console.log('ERROR: ', err)
                     return done(err)
                 }
                 if (!user) {
-                    return res.status(401).json({ message: 'Authentication failed. User not found.' });
-
+                    console.log('NO USER')
+                    return done(null, false)
                 }
                 if (!user.comparePassword(password)) {
-                    return res.status(401).json({ message: 'Authentication failed. Wrong password'})
+                    console.log('BAD PASSWORD')
+                    return done(null, false)
                 }
-                return res.json({token: jwt.sign({ email: user.email, username: user.username, _id: user._id}, secret )});
+                console.log('AUTHENTICATE SUCCESS', user)
+                return done(null, user)
             })
         }))
 }
