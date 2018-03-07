@@ -1,16 +1,16 @@
-import express from 'express'
-import next from 'next'
-import path from 'path'
-import mongoose from 'mongoose'
-import bodyParser from 'body-parser'
-import passport from 'passport'
-import compression from 'compression'
-import helmet from 'helmet'
-import cookieParser from 'cookie-parser'
-import logger from 'morgan'
-import config from './config'
-import routes from './routes'
-
+import express          from 'express'
+import next             from 'next'
+import path             from 'path'
+import mongoose         from 'mongoose'
+import bodyParser       from 'body-parser'
+import passport         from 'passport'
+import compression      from 'compression'
+import helmet           from 'helmet'
+import cookieParser     from 'cookie-parser'
+import logger           from 'morgan'
+import config           from './config'
+import routes           from './routes'
+import socketEvents     from './socketEvents'
 
 const passportConfig = require('./config/passport')(config, passport)
 
@@ -39,6 +39,9 @@ const handle = nextApp.getRequestHandler()
 
 nextApp.prepare().then(() => {
     const app = express()
+    const server = require('http').Server(app)
+    const io = require('socket.io')(server)
+
 
     const middlewares = [
         helmet(),
@@ -54,6 +57,9 @@ nextApp.prepare().then(() => {
     middlewares.forEach(middleware => app.use(middleware))
 
     app.use('/', routes)
+
+
+    socketEvents(config, io)
 
     app.get('*', (req, res) => {
         return handle(req, res)
