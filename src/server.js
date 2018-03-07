@@ -7,13 +7,12 @@ import passport from 'passport'
 import compression from 'compression'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
-import logger from 'logger'
+import logger from 'morgan'
 import config from './config'
-import routes from './routes/index'
+import routes from './routes'
 
 
 const passportConfig = require('./config/passport')(config, passport)
-
 
 const dev = process.env.NODE_ENV !== 'production'
 mongoose.Promise = global.Promise
@@ -34,35 +33,25 @@ const nextApp = next({
 
 const handle = nextApp.getRequestHandler()
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.log('Unhandled Rejections: ', promise)
-})
+// process.on('unhandledRejection', (reason, promise) => {
+//     console.log('Unhandled Rejections: ', promise)
+// })
 
 nextApp.prepare().then(() => {
     const app = express()
 
-    app.use(helmet())
-    // app.use(logger('dev'))
+    const middlewares = [
+        helmet(),
+        logger('dev'),
+        compression(),
+        bodyParser.json(),
+        bodyParser.urlencoded({ extended: true }),
+        passport.initialize(),
+        passport.session(),
+        cookieParser()
+    ]
 
-    app.use(compression())
-    app.use(cookieParser())
-
-    app.use(bodyParser.json())
-    app.use(bodyParser.urlencoded({ extended: true }))
-
-    app.use(cookieParser())
-
-    app.use(passport.initialize())
-    app.use(passport.session())
-
-
-    passport.serializeUser((user, done) => {
-        done(null, user.user.username)
-    })
-
-    passport.deserializeUser((username, done) => {
-        done(null, username)
-    })
+    middlewares.forEach(middleware => app.use(middleware))
 
     app.use('/', routes)
 
@@ -72,7 +61,7 @@ nextApp.prepare().then(() => {
 
 
     // error handle
-    //eslint-disable-next-line
+    // eslint-disable-next-line
     app.use('*', (err, req, res, next) => {
         return res.status(500).json({
             message: err.message

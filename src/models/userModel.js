@@ -1,45 +1,42 @@
-import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import mongoose from 'mongoose'
 
-const UserSchema = new mongoose.Schema({
-    user : {
+const UserSchema = new mongoose.Schema ({
+    local: {
         username: {
             type: String,
             unique: true,
-            required: true,
+            required: true
         },
         password: {
             type: String,
             required: true
         },
-        email: {
-            type: String,
-            unique: true,
-            lowercase: true,
-            trim: true,
-        },
+        channels: [
+            {
+                type: String
+            },
+        ],
         online: {
             type: Boolean,
             default: false
-        },
-        created: {
-            type: Date,
-            default: Date.now
         }
-    }
+    },
 })
 
 UserSchema.pre('save', function(next) {
-    this.user.username = this.user.username.toLowerCase()
+    this.local.username = this.local.username.toLowerCase()
+
     next()
 })
 
-UserSchema.methods.generateHash = (password) => {
+UserSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
 }
 
-UserSchema.methods.comparePassword = (password) => {
-    return bcrypt.compareSync(password, this.user.password)
+UserSchema.methods.validPassword = function (password) {
+    return bcrypt.compareSync(password, this.local.password)
 }
+
 
 export default mongoose.model('User', UserSchema)

@@ -4,7 +4,7 @@ import models from '../models'
 
 const router = express.Router()
 
-router.post('/register', passport.authenticate('local-signup'), (req, res) => {
+router.post('/register', passport.authenticate('local-register'), (req, res) => {
     res.json(req.user)
 })
 
@@ -22,7 +22,7 @@ router.post('/logout', (req, res) => {
 router.get('/users', (req, res) => {
     if (!req.user) return res.status(401).end()
 
-    models.User.find({}, {'user.username': 1, 'user.online': 1, _id: 0}, (err, users) => {
+    models.User.find({}, {'local.username': 1, 'local.online': 1, _id: 0}, (err, users) => {
         if (err) {
             return res.status(500).json({error: true})
         }
@@ -34,7 +34,7 @@ router.get('/users', (req, res) => {
 router.get('/username/:username', (req, res) => {
     req.params.username = req.params.username.toLowerCase();
 
-    models.User.findOne({'user.username': req.params.username}, (err, user) => {
+    models.User.findOne({'local.username': req.params.username}, (err, user) => {
         if (err) {
             return res.status(500).json({error: true});
         }
@@ -46,7 +46,7 @@ router.get('/username/:username', (req, res) => {
 router.get('/user/channels', (req, res) => {
     if (!req.user) return res.status(401).end()
 
-    models.User.findOne({'user.username': req.user}, {'user.channels': 1, _id: 0}, (err, channels) => {
+    models.User.findOne({'local.username': req.user}, {'local.channels': 1, _id: 0}, (err, channels) => {
         if (err) {
             return res.status(500).json({error: true})
         }
@@ -60,7 +60,7 @@ router.get('/channel/:name/messages', (req, res) => {
 
     req.params.name = req.params.name.toLowerCase()
 
-    models.User.findOne({'user.username': req.user, 'user.channels': req.params.name}).exec()
+    models.User.findOne({'local.username': req.user, 'local.channels': req.params.name}).exec()
         .then(user => {
             if (user) {
                 return models.Message.find({channel: req.params.name}).exec()
