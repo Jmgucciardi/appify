@@ -43,14 +43,18 @@ module.exports = (config, passport) => {
             User.findOne({ 'local.username': username.toLowerCase() }, (err, user) => {
             console.log('USER: ', user)
                 if (err) {
+                console.log('LOGIN ERROR: ', err)
                     return done(err)
                 }
                 if (!user) {
+                console.log('LOGIN ERROR: USER NOT FOUND!' )
                     return done(null, false)
                 }
                 if (!user.verifyPassword(password)) {
+                console.log('LOGIN ERROR: PASSWORD DOES NOT MATCH!')
                     return done(null, false)
                 }
+                console.log('LOG IN SUCCESS!')
                 return done(null, user)
             })
         }))
