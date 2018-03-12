@@ -7,10 +7,12 @@ import config from '../config'
 const app = express()
 const router = express.Router()
 
+// register user route
 router.post('/register', passport.authenticate('local-register'), (req, res) => {
     res.json(req.user)
 })
 
+// login route and generate jwt token
 router.post('/authenticate', passport.authenticate('local-login'), (req, res) => {
 
     const payload = {
@@ -35,6 +37,35 @@ router.post('/authenticate', passport.authenticate('local-login'), (req, res) =>
 
 })
 
+// verify the token
+router.use((req, res, next) => {
+    let token = req.body.token || req.query.token || req.headers['x-access-token']
+
+    // decode token
+    if (token) {
+
+        // verifies secret and checks exp
+        jwt.verify(token, app.get('appSecret'), (err, decoded) => {
+            if (err) {
+                return res.json({ success: false, message: 'Failed to authenticate token.' })
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded
+                next()
+            }
+        })
+
+    } else {
+
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        })
+    }
+})
+
 router.post('/logout', (req, res) => {
     if (!req.user) return res.status(500).json({error: true})
 
@@ -49,7 +80,7 @@ router.get('/users', (req, res) => {
         if (err) {
             return res.status(500).json({error: true})
         }
-
+        console.log('users:', users)
         res.json(users)
     })
 })
