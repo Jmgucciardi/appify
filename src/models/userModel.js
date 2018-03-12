@@ -20,6 +20,10 @@ const UserSchema = new mongoose.Schema ({
         online: {
             type: Boolean,
             default: false
+        },
+        last_login: {
+            type: Date,
+            default: new Date()
         }
     },
 })

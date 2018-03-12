@@ -12,6 +12,7 @@ router.post('/register', passport.authenticate('local-register'), (req, res) => 
 })
 
 router.post('/authenticate', passport.authenticate('local-login'), (req, res) => {
+
     const payload = {
         user: req.user
     }
@@ -23,6 +24,8 @@ router.post('/authenticate', passport.authenticate('local-login'), (req, res) =>
     })
 
     console.log('TOKEN: ', token)
+
+    req.user.local.online = true
 
     res.json({
         success: true,
