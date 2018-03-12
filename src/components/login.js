@@ -9,8 +9,9 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
+            isAuthenticating: false,
             signInError: false,
-            notificationBar: false,
+            errorMessage: false,
             notificationText: ''
         }
     }

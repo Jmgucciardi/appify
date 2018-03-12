@@ -5,5 +5,5 @@ export default {
     test_env: 'test',
     defaultChannel: 'general',
     secret: 'UNICORNS_ARE_REAL',
-    secret_ENV: process.env.SECRET
+    secret_ENV: process.env.JWT_SECRET
 }

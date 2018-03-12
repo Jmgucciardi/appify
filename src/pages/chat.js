@@ -1,4 +1,5 @@
 import React from 'react'
+import ChatPage from '../components/chat'
 
 
 class Chat extends React.Component {
@@ -7,7 +8,7 @@ class Chat extends React.Component {
         return (
             <div>
                 <div>
-                   <p> CHAT PAGE </p>
+                   <ChatPage />
                 </div>
             </div>
         )
