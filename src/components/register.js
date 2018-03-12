@@ -14,6 +14,9 @@ class Register extends Component {
         }
     }
 
+    _handleSubmit = (e) => {
+        const newUser = this.props.createUser(e)
+    }
 
     render() {
         const user = {
@@ -30,7 +33,9 @@ class Register extends Component {
                             userNameInputValue: '',
                             passwordInputValue: ''
                         })
-                        this.props.createUser(user)
+
+                       this.props.createUser(user)
+
                     }}>
                         <input className="StandardInput" placeholder="Username here..." value={this.state.username}
                                onChange={e => this.setState({

@@ -1,3 +1,4 @@
+import 'whatwg-fetch'
 import Router from 'next/router'
 
 function createUserError(message) {
@@ -38,9 +39,6 @@ export function createUser(e) {
             })
             .then(res => res.json())
             .then(() => dispatch(createUserSuccess(e)))
-            .catch((err) => {
-                dispatch(createUserError(err))
-            })
             .then(() => {
                 console.log('REGISTER_USER: ', e)
                 Router.push({
@@ -50,8 +48,9 @@ export function createUser(e) {
                     },
                 })
             })
-            .catch(err => {
-                throw err
+            .catch((err) => {
+                console.log('Register_Failed ', err)
+                dispatch(createUserError(err))
             })
     }
 }

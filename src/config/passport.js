@@ -1,7 +1,10 @@
 const LocalStrategy = require('passport-local').Strategy
+import jwt from 'jsonwebtoken'
+import express from 'express'
 import User from '../models/userModel'
 
 module.exports = (config, passport) => {
+    const app = express()
 
     passport.serializeUser((user, done) => done(null, user.local.username))
     passport.deserializeUser((username, done) => done(null, username))
@@ -26,8 +29,10 @@ module.exports = (config, passport) => {
                 newUser.local.channels = [config.defaultChannel.toLowerCase()]
                 newUser.save((err, user) => {
                     if (err) {
+                        console.log('CREATE_USER)_ERROR: ', err)
                         throw err
                     }
+                    console.log('NEW USER: ', newUser)
                     return done(null, newUser);
                 })
             })
@@ -43,17 +48,21 @@ module.exports = (config, passport) => {
             User.findOne({ 'local.username': username.toLowerCase() }, (err, user) => {
             console.log('USER: ', user)
                 if (err) {
-                console.log('LOGIN ERROR: ', err)
+
+                    console.log('LOGIN ERROR: ', err)
                     return done(err)
                 }
                 if (!user) {
-                console.log('LOGIN ERROR: USER NOT FOUND!' )
+
+                    console.log('LOGIN ERROR: USER NOT FOUND!' )
                     return done(null, false)
                 }
                 if (!user.verifyPassword(password)) {
-                console.log('LOGIN ERROR: PASSWORD DOES NOT MATCH!')
+
+                    console.log('LOGIN ERROR: PASSWORD DOES NOT MATCH!')
                     return done(null, false)
                 }
+
                 console.log('LOG IN SUCCESS!')
                 return done(null, user)
             })

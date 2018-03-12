@@ -1,7 +1,10 @@
 import express from 'express'
 import passport from 'passport'
 import models from '../models'
+import jwt from "jsonwebtoken"
+import config from '../config'
 
+const app = express()
 const router = express.Router()
 
 router.post('/register', passport.authenticate('local-register'), (req, res) => {
@@ -9,7 +12,24 @@ router.post('/register', passport.authenticate('local-register'), (req, res) => 
 })
 
 router.post('/authenticate', passport.authenticate('local-login'), (req, res) => {
-    res.json(req.user)
+    const payload = {
+        user: req.user
+    }
+
+    app.set('appSecret', config.secret)
+
+    let token = jwt.sign(payload, app.get('appSecret'), {
+        expiresIn: 1400 // expires in 24 hours
+    })
+
+    console.log('TOKEN: ', token)
+
+    res.json({
+        success: true,
+        user: req.user,
+        token: token,
+    })
+
 })
 
 router.post('/logout', (req, res) => {

@@ -4,5 +4,6 @@ export default {
     test_port: 3001,
     test_env: 'test',
     defaultChannel: 'general',
-    secret: process.env.SECRET
+    secret: 'UNICORNS_ARE_REAL',
+    secret_ENV: process.env.SECRET
 }
