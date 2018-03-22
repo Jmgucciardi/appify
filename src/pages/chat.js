@@ -1,5 +1,7 @@
 import React from 'react'
-import ChatPage from '../components/chat'
+import withRedux from 'next-redux-wrapper'
+import ChatContainer from '../containers/chatContainer'
+import { initStore} from "../store"
 
 
 class Chat extends React.Component {
@@ -8,11 +10,11 @@ class Chat extends React.Component {
         return (
             <div>
                 <div>
-                   <ChatPage />
+                   <ChatContainer />
                 </div>
             </div>
         )
     }
 }
 
-export default Chat
+export default withRedux(initStore)(Chat)

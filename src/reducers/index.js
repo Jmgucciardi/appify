@@ -1,55 +1,45 @@
 import { combineReducers } from 'redux'
+import {
+    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE
+} from '../actions/login'
 
-const initialState = {
-    isAuthenticating: false,
-    currentUser: null,
-    errorMessage: null
-}
 
-const reducers = (state = initialState, action = {}) => {
+/**
+* Getting a local storage error: localStorage returns undefined when the token does not exist and thus can not
+ * be verified . Need a logic gate of some kind to lock this problem up so it wont fire at all.
+* */
+
+const reducers = (state = {
+    isFetching: false,
+    isAuthenticated: false,  // !!localStorage.getItem('id_token')
+}, action) => {
+    console.log('REDUCER_ACTION_TYPE: ', action.type)
     switch (action.type) {
-        case 'LOGIN_REQUEST':
-            return {
-                ...state,
-            isAuthenticating: true
-            }
-        case 'LOGIN_FAILURE' :
-            return {
-                ...state,
-                isAuthenticating: false,
-                errorMessage: action.errorMessage
-            }
-        case 'LOGIN_SUCCESS' :
-            return {
-                isAuthenticating: false,
-                currentUser: action.user,
-                errorMessage: null
-            }
-        case 'LOGOUT':
-            return {
-                isAuthenticating: false,
-                currentUser: null,
-                errorMessage: null
-            }
+
+        case LOGIN_REQUEST:
+            return Object.assign({}, state, {
+                isFetching: true,
+                isAuthenticated: false,
+                user: action.data
+            })
+
+        case LOGIN_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                isAuthenticated: true,
+                errorMessage: ''
+            })
+        case LOGIN_FAILURE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                isAuthenticated: false,
+                errorMessage: action.message
+            })
+
         default:
             return state
     }
-
-
-
-    if (action.type === 'USER_SUCCESSFULLY_CREATED') {
-        return action.value
-    }
-    if (action.type === "USER_AUTH_SUCCESS") {
-        return action.value
-    }
-    if (action.type === 'CONNECTION_SUCCESS') {
-        return action.type
-    }
-    return state
-
 }
-
 
 
 const rootReducer = combineReducers({

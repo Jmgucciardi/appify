@@ -10,7 +10,7 @@ import cookieParser     from 'cookie-parser'
 import logger           from 'morgan'
 import config           from './config'
 import routes           from './routes'
-import socketEvents     from './socketEvents'
+
 
 const passportConfig = require('./config/passport')(config, passport)
 
@@ -59,7 +59,8 @@ nextApp.prepare().then(() => {
     app.use('/', routes)
 
 
-    socketEvents(config, io)
+    const socketHandler = require('./socketEvents.js')(config, io)
+
 
     app.get('*', (req, res) => {
         return handle(req, res)
@@ -74,7 +75,7 @@ nextApp.prepare().then(() => {
         })
     })
 
-    app.listen(config.port, (err) => {
+    server.listen(config.port, (err) => {
         if (err) {
             throw err
         }

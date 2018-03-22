@@ -25,9 +25,11 @@ router.post('/authenticate', passport.authenticate('local-login'), (req, res) =>
         expiresIn: 1400 // expires in 24 hours
     })
 
-    console.log('TOKEN: ', token)
 
     req.user.local.online = true
+
+    console.log('USER: ', req.user)
+    console.log('TOKEN: ', token)
 
     res.json({
         success: true,
@@ -50,6 +52,7 @@ router.use((req, res, next) => {
                 return res.json({ success: false, message: 'Failed to authenticate token.' })
             } else {
                 // if everything is good, save to request for use in other routes
+                console.log('VERIFY_TOKEN_API: SUCCESS')
                 req.decoded = decoded
                 next()
             }
@@ -80,7 +83,7 @@ router.get('/users', (req, res) => {
         if (err) {
             return res.status(500).json({error: true})
         }
-        console.log('users:', users)
+
         res.json(users)
     })
 })

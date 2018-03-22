@@ -15,7 +15,7 @@ function requestLogin(data) {
 }
 
 function receiveLogin(user) {
-    console.log('LOGIN_USER: ', user)
+    console.log('ACTION: LOGIN_USER: ', user)
     return {
         type: LOGIN_SUCCESS,
         isFetching: false,
@@ -49,7 +49,7 @@ export const login = (e) => {
     }
 
     return dispatch => {
-        dispatch(requestLogin(e))
+        dispatch(requestLogin(e))  // check to make sure the login call is triggered
         return fetch('/api/authenticate', config)
             .then(res => res.json()
             .then(user => ({ user, res })))
@@ -58,8 +58,9 @@ export const login = (e) => {
                     dispatch(loginError(user.message))
                     return Promise.reject(user)
                 } else {
+                    console.log('USER_WITH_TOKEN: ', user)
                     localStorage.setItem('id_token', user.id_token)
-                    localStorage.setItem('id_token', user.access_token)
+                    localStorage.setItem('access_token', user.access_token)
 
                     dispatch(receiveLogin(user))
                 }

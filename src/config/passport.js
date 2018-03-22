@@ -44,9 +44,7 @@ module.exports = (config, passport) => {
         passReqToCallback: true,
     },
         (req, username, password, done) => {
-        console.log('BODY: ', req.body)
             User.findOne({ 'local.username': username.toLowerCase() }, (err, user) => {
-            console.log('USER: ', user)
                 if (err) {
 
                     console.log('LOGIN ERROR: ', err)
