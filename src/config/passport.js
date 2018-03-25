@@ -1,10 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy
-import jwt from 'jsonwebtoken'
-import express from 'express'
 import User from '../models/userModel'
 
+
 module.exports = (config, passport) => {
-    const app = express()
 
     passport.serializeUser((user, done) => done(null, user.local.username))
     passport.deserializeUser((username, done) => done(null, username))

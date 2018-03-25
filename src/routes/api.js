@@ -7,6 +7,7 @@ import config from '../config'
 const app = express()
 const router = express.Router()
 
+
 // register user route
 router.post('/register', passport.authenticate('local-register'), (req, res) => {
     res.json(req.user)
@@ -16,7 +17,7 @@ router.post('/register', passport.authenticate('local-register'), (req, res) => 
 router.post('/authenticate', passport.authenticate('local-login'), (req, res) => {
 
     const payload = {
-        user: req.user
+        user: req.user.username
     }
 
     app.set('appSecret', config.secret)
@@ -26,14 +27,12 @@ router.post('/authenticate', passport.authenticate('local-login'), (req, res) =>
     })
 
 
-    req.user.local.online = true
-
     console.log('USER: ', req.user)
     console.log('TOKEN: ', token)
 
     res.json({
         success: true,
-        user: req.user,
+        message: 'New Token Created!',
         token: token,
     })
 
@@ -49,6 +48,7 @@ router.use((req, res, next) => {
         // verifies secret and checks exp
         jwt.verify(token, app.get('appSecret'), (err, decoded) => {
             if (err) {
+                console.log('FAILED_TO_VERIFY_TOKEN')
                 return res.json({ success: false, message: 'Failed to authenticate token.' })
             } else {
                 // if everything is good, save to request for use in other routes
@@ -59,6 +59,7 @@ router.use((req, res, next) => {
         })
 
     } else {
+        console.log('NO_TOKEN_FOUND')
 
         // if there is no token
         // return an error
@@ -70,14 +71,14 @@ router.use((req, res, next) => {
 })
 
 router.post('/logout', (req, res) => {
-    if (!req.user) return res.status(500).json({error: true})
+    if (!req.user) return res.status(500).json({error: res})
 
     req.logout()
     res.json({success: true})
 })
 
 router.get('/users', (req, res) => {
-    if (!req.user) return res.status(401).end()
+   // if (!req.user) return res.status(401).end()
 
     models.User.find({}, {'local.username': 1, 'local.online': 1, _id: 0}, (err, users) => {
         if (err) {
@@ -95,13 +96,20 @@ router.get('/username/:username', (req, res) => {
         if (err) {
             return res.status(500).json({error: true});
         }
+        const username = user.local.username
+        const onlineStatus = user.local.online
 
-        return res.json({alreadyInUse: !!user })
+        return res.json({
+            alreadyInUse: !!user,
+            user: username,
+            online: onlineStatus
+
+        })
     })
 })
 
 router.get('/user/channels', (req, res) => {
-    if (!req.user) return res.status(401).end()
+   // if (!req.user) return res.status(401).end()
 
     models.User.findOne({'local.username': req.user}, {'local.channels': 1, _id: 0}, (err, channels) => {
         if (err) {
@@ -112,8 +120,9 @@ router.get('/user/channels', (req, res) => {
     })
 })
 
+
 router.get('/channel/:name/messages', (req, res) => {
-    if (!req.user) return res.status(401).end()
+    // if (!req.user) return res.status(401).end()
 
     req.params.name = req.params.name.toLowerCase()
 

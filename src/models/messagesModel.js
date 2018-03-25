@@ -1,18 +1,26 @@
 import mongoose from 'mongoose'
 
 const messageSchema = new mongoose.Schema ({
-    created: {
-        type: Date,
-        default: Date.now
+        from: {
+            type: String,
+            required: true
+        },
+        to: {
+            type: String,
+            required: true
+        },
+        message_body: {
+            type: String,
+            required: true
+        },
+        created: {
+            type: Date,
+            default: Date.now
+        }
     },
-    text: {
-        type: String,
-        required: true
-    },
-    user: {
-        type: String,
-        required: true
-    }
+
+    {
+        timestamps: true
 })
 
 messageSchema.pre('save', (next) => {

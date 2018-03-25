@@ -58,11 +58,11 @@ export const login = (e) => {
                     dispatch(loginError(user.message))
                     return Promise.reject(user)
                 } else {
-                    console.log('USER_WITH_TOKEN: ', user)
                     localStorage.setItem('id_token', user.id_token)
                     localStorage.setItem('access_token', user.access_token)
 
                     dispatch(receiveLogin(user))
+
                 }
             }).then(() => {
                 Router.push({
