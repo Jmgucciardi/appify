@@ -15,12 +15,11 @@ function requestLogin(data) {
 }
 
 function receiveLogin(user) {
-    console.log('ACTION: LOGIN_USER: ', user)
     return {
         type: LOGIN_SUCCESS,
         isFetching: false,
         isAuthenticated: true,
-        id_token: user.id_token
+        id_token: user.token
     }
 }
 
@@ -58,8 +57,11 @@ export const login = (e) => {
                     dispatch(loginError(user.message))
                     return Promise.reject(user)
                 } else {
-                    localStorage.setItem('id_token', user.id_token)
+                    localStorage.setItem('id_token', user.token)
                     localStorage.setItem('access_token', user.access_token)
+
+                    console.log('USER_WITH_TOKEN: ', user)
+                    // user.token logs the token value
 
                     dispatch(receiveLogin(user))
 

@@ -7,43 +7,28 @@ import io from 'socket.io-client'
 // webstorm auto-magically generated the import statement above, keeping it until I know props will handle the call
 
 class ChatPage extends Component {
-    constructor(props) {
-        super(props)
 
-        // this.client = io('http://localhost')
-        //
-        // const eventHandlers = [
-        //     {event: events.connect, handler: this.props._handleConnect }
-        // ]
-        //
-        // eventHandlers.map(({ event, handler }) => this.client.on(event, handler))
-        //
-        // //
-        // // this.client = io.connect(`//${window.location.host}`)
-        // //
-        // // const eventHandlers = [
-        // //     { event: events.connect, handler: this._handleConnect },
-        // //     { event: events.disconnect, handler: this._handleDisconnect },
-        // //     { event: events.error, handler: this._handleError },
-        // //     { event: events.online, handler: this._handleOnline },
-        // //     { event: events.offline, handler: this._handleOffline },
-        // //     { event: events.join, handler: this._handleJoin },
-        // //     { event: events.leave, handler: this._handleLeave },
-        // //     { event: events.msg, handler: this._handleMsg },
-        // //     { event: events.privateMsg, handler: this._handlePrivateMsg },
-        // //     { event: events.ownPrivateMsg, handler: this._handleOwnPrivateMsg },
-        // // ]
-        // //
-        // // eventHandlers.map(({ event, handler }) => this.client.on(event, handler))
-
+    componentDidMount() {
+        if (this.props.match) {
+            const id = this.props.match.params.username
+            this.props._handleUsersById(id) // get api/username/:username
+            this.props._handleConnect() // get api/users
+            this.props._handleLocalStorage()
+        }
     }
 
     render() {
+        this.props._handleConnect()
+        this.props._handleLocalStorage()
+
         return (
             <div>
-               <p> CHAT PAGE </p>
+                <form onSubmit={e => {
+                    e.preventDefault()
+                }}>
+               <p> Chat Page</p>
+                </form>
             </div>
-
         )
     }
 }

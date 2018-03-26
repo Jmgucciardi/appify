@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Chat from '../components/chat'
-import {_handleConnect, _handleUsersById} from '../actions/chat'
+import {_handleConnect, _handleLocalStorage, _handleUsersById} from '../actions/chat'
 
 
 function mapStateToProps(state) {
@@ -17,6 +17,10 @@ function mapDispatchToProps(dispatch) {
         },
         _handleUsersById: (id) => {
             const action = _handleUsersById(id)
+            dispatch(action)
+        },
+        _handleLocalStorage: () => {
+            const action = _handleLocalStorage()
             dispatch(action)
         }
     }

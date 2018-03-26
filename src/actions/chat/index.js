@@ -5,6 +5,7 @@ export const QUERY_FOR_USERS = 'QUERY_FOR_USERS'
 export const FIND_USER_SUCCESS = 'USER_FOUND_SUCCESS'
 export const FIND_USER_FAILURE = 'FIND_USER_FAILURE'
 export const QUERY_FOR_USER_BY_ID = 'QUERY_FOR_USER_BY_ID'
+export const HANDLE_LOCAL_STORAGE = 'HANDLE_LOCAL_STORAGE'
 
 const queryUsers = () => {
     return {
@@ -13,6 +14,7 @@ const queryUsers = () => {
 }
 
 const findUserSuccess = (user) => {
+    console.log('ACTION: GET_USER: ', user)
     return {
         type: FIND_USER_SUCCESS,
         value: user
@@ -45,7 +47,6 @@ export const _handleConnect = () => {
             .catch((err) => {
                 dispatch(findUserError(err))
             })
-
         }
     }
 }
@@ -73,4 +74,10 @@ export const _handleUsersById = (username) => {
     }
 }
 
+
+export const _handleLocalStorage = () => {
+    return {
+        type: HANDLE_LOCAL_STORAGE
+    }
+}
 

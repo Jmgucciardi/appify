@@ -17,7 +17,8 @@ router.post('/register', passport.authenticate('local-register'), (req, res) => 
 router.post('/authenticate', passport.authenticate('local-login'), (req, res) => {
 
     const payload = {
-        user: req.user.username
+        user: req.user.username,
+        id: req.user._id.toString()
     }
 
     app.set('appSecret', config.secret)
@@ -32,6 +33,7 @@ router.post('/authenticate', passport.authenticate('local-login'), (req, res) =>
 
     res.json({
         success: true,
+        user: req.user,
         message: 'New Token Created!',
         token: token,
     })
@@ -41,7 +43,7 @@ router.post('/authenticate', passport.authenticate('local-login'), (req, res) =>
 // verify the token
 router.use((req, res, next) => {
     let token = req.body.token || req.query.token || req.headers['x-access-token']
-
+    token = token.replace('Bearer ', '')
     // decode token
     if (token) {
 

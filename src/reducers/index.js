@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import {
     LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE
 } from '../actions/login'
+import { HANDLE_LOCAL_STORAGE } from '../actions/chat'
 
 
 /**
@@ -9,11 +10,15 @@ import {
  * be verified . Need a logic gate of some kind to lock this problem up so it wont fire at all.
 * */
 
+console.log('STORAGE: ', localStorage.getItem("id_token"))
+
+
 const reducers = (state = {
     isFetching: false,
-    isAuthenticated: false,  // !!localStorage.getItem('id_token')
+    isAuthenticated: !!localStorage.getItem("id_token")
 }, action) => {
     console.log('REDUCER_ACTION_TYPE: ', action.type)
+
     switch (action.type) {
 
         case LOGIN_REQUEST:
@@ -35,6 +40,12 @@ const reducers = (state = {
                 isAuthenticated: false,
                 errorMessage: action.message
             })
+        case HANDLE_LOCAL_STORAGE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                isAuthenticated: true,
+                errorMessage: ''
+        })
 
         default:
             return state
