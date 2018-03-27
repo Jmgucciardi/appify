@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
+import Button from '../shared/button'
+
 
 
 
@@ -58,23 +60,7 @@ class Login extends Component {
         if (this.validateForm(data)) {
             this.setState({ loading: true })
             return this.props.login(data)
-                .then(res => {
-                    this.setState({
-                        loading: false,
-                        dialogActive: true,
-                        dialogTitle: 'Login Accepted',
-                    })
-                }).catch(error => {
-                    this.setState({
-                        loading: false,
-                        dialogActive: true,
-                        dialogTitle: 'Oops! You created a bad request',
-                        dialogContent: 'Make sure you filled out the entire form'
-                    })
-                    throw error
-                })
         }
-
     }
 
     handleInput = ({ target: { name, value } }) => {
@@ -87,7 +73,8 @@ class Login extends Component {
         return this.subscribe(this.state.formValue)
     }
 
-    render({ handleInput, handlePost } = this) {
+
+    render({ handleInput, handlePost, props: { hasError } } = this) {
         return (
             <div>
                 <div className="DialogContainer">
@@ -127,5 +114,7 @@ class Login extends Component {
 Login.propTypes = {
     login: PropTypes.func.isRequired
 }
+
+// TODO: Style the page with radium, make shareable input for every input in app
 
 export default Login
