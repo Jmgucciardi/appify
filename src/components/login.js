@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 import Link from 'next/link'
 import Button from '../shared/button'
 
-
-
-
 class Login extends Component {
     constructor() {
         super()
@@ -56,7 +53,7 @@ class Login extends Component {
     }
 
 
-    subscribe = (data) => {
+    login = (data) => {
         if (this.validateForm(data)) {
             this.setState({ loading: true })
             return this.props.login(data)
@@ -70,7 +67,7 @@ class Login extends Component {
 
     handlePost = (e) => {
         e.preventDefault()
-        return this.subscribe(this.state.formValue)
+        return this.login(this.state.formValue)
     }
 
 
