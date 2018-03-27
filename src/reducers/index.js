@@ -10,12 +10,12 @@ import { HANDLE_LOCAL_STORAGE } from '../actions/chat'
  * be verified . Need a logic gate of some kind to lock this problem up so it wont fire at all.
 * */
 
-console.log('STORAGE: ', localStorage.getItem("id_token"))
+// console.log('STORAGE: ', localStorage.getItem("id_token"))
 
 
 const reducers = (state = {
     isFetching: false,
-    isAuthenticated: !!localStorage.getItem("id_token")
+    isAuthenticated: false //!!localStorage.getItem("id_token")
 }, action) => {
     console.log('REDUCER_ACTION_TYPE: ', action.type)
 
