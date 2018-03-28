@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Link from 'next/link'
+import RaisedButton from 'material-ui/RaisedButton'
 
 import { withStyles } from 'material-ui/styles';
 
@@ -76,8 +76,6 @@ class Login extends Component {
         return (
             <div>
                 <div className="DialogContainer">
-                    <p> Appify => </p>
-
                     <div className="Dialog">
                         <form onSubmit={e => {
                             e.preventDefault()
@@ -96,12 +94,9 @@ class Login extends Component {
                                errormessage={this.state.error.password}
                             />
 
-                            <button variant="raised" color="secondary" type="submit" onClick={handlePost}> Login </button>
+                            <RaisedButton variant="raised" color="secondary" type="submit" onClick={handlePost}> Login </RaisedButton>
 
                         </form>
-                        <p><Link href = '/register' >
-                            <a> Click to Register</a>
-                        </Link></p>
                     </div>
                 </div>
             </div>

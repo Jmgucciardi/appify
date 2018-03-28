@@ -1,7 +1,5 @@
 import React , { Component } from 'react'
 import PropTypes from 'prop-types'
-import Link from 'next/link'
-
 
 class Register extends Component {
     constructor() {
@@ -42,16 +40,13 @@ class Register extends Component {
                                    username: e.target.value,
                                })}
                         />
-                        <input className="StandardInput" placeholder="Password here..." value={this.state.password}
+                        <input className="StandardInput" type='password' placeholder="Password here..." value={this.state.password}
                                onChange={e => this.setState({
                                    password: e.target.value,
                                })}
                         />
 
                         <button type="submit"> Create Account </button>
-                        <p><Link href="/">
-                            <a>Already have an account? Click here to log in</a>
-                        </Link></p>
                     </form>
                 </div>
             </div>
