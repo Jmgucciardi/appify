@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
-import Button from '../shared/button'
+
+import { withStyles } from 'material-ui/styles';
 
 class Login extends Component {
     constructor() {
@@ -95,7 +96,7 @@ class Login extends Component {
                                errormessage={this.state.error.password}
                             />
 
-                            <button type="submit" onClick={handlePost}> Login </button>
+                            <button variant="raised" color="secondary" type="submit" onClick={handlePost}> Login </button>
 
                         </form>
                         <p><Link href = '/register' >
@@ -114,4 +115,4 @@ Login.propTypes = {
 
 // TODO: Style the page with radium, make shareable input for every input in app
 
-export default Login
+export default (Login)
