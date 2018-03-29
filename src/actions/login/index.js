@@ -73,6 +73,6 @@ export const login = (e) => {
                         username: e.username,
                     },
                 })
-            }).catch(err => dispatch(loginError(err)))
+            }).catch(err => { throw err })
     }
 }

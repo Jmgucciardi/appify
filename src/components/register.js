@@ -51,7 +51,7 @@ class Register extends Component {
     register = (data) => {
         if (this.validateForm(data)) {
             this.setState({ loading: true })
-            return this.props.createUser(data)
+            return this.props.register(data)
         }
     }
 
@@ -97,7 +97,7 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-    createUser: PropTypes.func.isRequired
+    register: PropTypes.func.isRequired
 }
 
 
