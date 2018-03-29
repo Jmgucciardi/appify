@@ -1,5 +1,7 @@
 import React , { Component } from 'react'
 import PropTypes from 'prop-types'
+import RaisedButton from 'material-ui/RaisedButton'
+import Input from 'material-ui/TextField'
 
 class Register extends Component {
     constructor() {
@@ -35,18 +37,27 @@ class Register extends Component {
                        this.props.createUser(user)
 
                     }}>
-                        <input className="StandardInput" placeholder="Username here..." value={this.state.username}
+                        <Input
+                            id="username"
+                            className="StandardInput"
+                            placeholder="Username..."
+                            value={this.state.username}
                                onChange={e => this.setState({
                                    username: e.target.value,
                                })}
                         />
-                        <input className="StandardInput" type='password' placeholder="Password here..." value={this.state.password}
+                        <Input
+                            id="password"
+                            className="StandardInput"
+                            type='password'
+                            placeholder="Password..."
+                            value={this.state.password}
                                onChange={e => this.setState({
                                    password: e.target.value,
                                })}
                         />
 
-                        <button type="submit"> Create Account </button>
+                        <RaisedButton type="submit"> Register </RaisedButton>
                     </form>
                 </div>
             </div>
