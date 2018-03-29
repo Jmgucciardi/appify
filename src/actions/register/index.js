@@ -42,10 +42,7 @@ export function createUser(e) {
             .then(() => {
                 console.log('REGISTER_USER: ', e)
                 Router.push({
-                    pathname: '/login',
-                    query: {
-                        username: e.username,
-                    },
+                    pathname: '/',
                 })
             })
             .catch((err) => {

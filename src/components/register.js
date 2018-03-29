@@ -8,56 +8,86 @@ class Register extends Component {
         super()
 
         this.state = {
-            error: false,
-            username: '',
-            password: ''
+            dialogActive: false,
+            formValue: {
+                username: '',
+                password: '',
+                isAuthenticating: false
+            },
+
+            error: {
+                username: null,
+                password: null,
+            },
         }
     }
 
-    _handleSubmit = (e) => {
-        const newUser = this.props.createUser(e)
+    validateForm = (body) => {
+        const { error, formValue } = this.state
+        const errors = this.state.error
+
+        if (formValue.username.length === 0) {
+            errors.username = 'Username is required'
+        }
+
+        else {
+            errors.username = null
+        }
+        if (formValue.password.length === 0) {
+            errors.password = 'Password is required'
+        }
+
+        else {
+            errors.password = null
+        }
+
+        this.setState({ error: errors })
+        // this.props.loginFormErrors({ type: this.props.type, error: errors })    // track event
+
+        return !error.username && !error.password
     }
 
-    render() {
-        const user = {
-            username: this.state.username,
-            password: this.state.password
+
+    register = (data) => {
+        if (this.validateForm(data)) {
+            this.setState({ loading: true })
+            return this.props.createUser(data)
         }
+    }
+
+    handleInput = ({ target: { name, value } }) => {
+        const formValue = { ...this.state.formValue, [name]: value }
+        this.setState({ formValue })
+    }
+
+    handlePost = (e) => {
+        e.preventDefault()
+        return this.register(this.state.formValue)
+    }
+
+    render({ handleInput, handlePost } = this) {
         return (
             <div className="RegisterContainer">
                 <p> Create An Account</p>
                 <div className="RegisterForm">
                     <form onSubmit={e => {
                         e.preventDefault()
-                        this.setState({
-                            userNameInputValue: '',
-                            passwordInputValue: ''
-                        })
-
-                       this.props.createUser(user)
-
                     }}>
-                        <Input
-                            id="username"
-                            className="StandardInput"
-                            placeholder="Username..."
-                            value={this.state.username}
-                               onChange={e => this.setState({
-                                   username: e.target.value,
-                               })}
-                        />
-                        <Input
-                            id="password"
-                            className="StandardInput"
-                            type='password'
-                            placeholder="Password..."
-                            value={this.state.password}
-                               onChange={e => this.setState({
-                                   password: e.target.value,
-                               })}
+                        <Input type="text" name="username" className="StandardInput" placeholder="Username..."
+                               id='username'
+                               onKeyUp={handleInput}
+                               onChange={(e) => this.handleInput(e)}
+                               errorText={this.state.error.username}
                         />
 
-                        <RaisedButton type="submit"> Register </RaisedButton>
+                        <Input type="password" name="password" className="StandardInput" placeholder="Password..."
+                               id='password'
+                               onKeyUp={handleInput}
+                               onChange={(e) => this.handleInput(e)}
+                               errorText={this.state.error.password}
+                        />
+
+                        <RaisedButton type="submit" onClick={handlePost}> Register </RaisedButton>
                     </form>
                 </div>
             </div>
