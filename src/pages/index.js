@@ -95,25 +95,25 @@ class HomePage extends React.Component {
                         <div>
                             <Dialog
                                 open={this.state.open}
-                                title='Login'
+                                title='Register'
                                 actions={standardActions}
                                 onRequestClose={this.handleRequestClose}
                                  >
 
-                                <LoginContainer/>
+                                <RegisterContainer/>
 
                             </Dialog>
                         </div>
                         <h1> Appify => </h1>
                         <h2>::Alpha::</h2>
                         <RaisedButton
-                            label="login"
+                            label="Register"
                             secondary
                             onTouchTap={this.handleTouchTap}>
                         </RaisedButton>
                     </div>
                     <p> or </p>
-                    <RegisterContainer />
+                    <LoginContainer/>
                 </div>
             </MuiThemeProvider>
         )

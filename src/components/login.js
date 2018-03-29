@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import RaisedButton from 'material-ui/RaisedButton'
+import Input from 'material-ui/TextField'
 
 import { withStyles } from 'material-ui/styles';
 
@@ -31,24 +32,22 @@ class Login extends Component {
         const errors = this.state.error
 
         if (formValue.username.length === 0) {
-            console.log('USERNAME NOT PROVIDED')
-            errors.usermame = 'Username is blank'
-        }  //else if (!re.test(formValue.username)) { errors.username = 'Invalid username' }
+            errors.username = 'Username is blank'
+        }
 
         else {
-            errors.first_name = null
+            errors.username = null
         }
         if (formValue.password.length === 0) {
-            console.log('PASSWORD NOT PROVIDED')
             errors.password = 'Password is blank'
-        } //else if (!re.test(formValue.last_name)) { errors.last_name = 'Invalid Last Name' }
+        }
 
         else {
             errors.password = null
         }
 
         this.setState({ error: errors })
-       // this.props.formNLErrors({ type: this.props.type, error: errors })    // track event
+       // this.props.loginFormErrors({ type: this.props.type, error: errors })    // track event
 
         return !error.username && !error.password
     }
@@ -80,21 +79,21 @@ class Login extends Component {
                         <form onSubmit={e => {
                             e.preventDefault()
                         }}>
-                            <input type="text" name="username" className="StandardInput" placeholder="Username..."
+                            <Input type="text" name="username" className="StandardInput" placeholder="Username..."
+                               id='username'
                                onKeyUp={handleInput}
                                onChange={(e) => this.handleInput(e)}
-                               haserror={this.state.error.username}
-                               errormessage={this.state.error.username}
-                            />
+                               errorText={this.state.error.username}
+                            /><br />
 
-                            <input type="password" name="password" className="StandardInput" placeholder="Password..."
+                            <Input type="password" name="password" className="StandardInput" placeholder="Password..."
+                               id='password'
                                onKeyUp={handleInput}
                                onChange={(e) => this.handleInput(e)}
-                               haserror={this.state.error.password}
-                               errormessage={this.state.error.password}
-                            />
+                               errorText={this.state.error.password}
+                            /><br />
 
-                            <RaisedButton variant="raised" color="secondary" type="submit" onClick={handlePost}> Login </RaisedButton>
+                            <RaisedButton variant="raised" color="secondary" type="submit" onClick={handlePost}> Login </RaisedButton> <br />
 
                         </form>
                     </div>
@@ -107,7 +106,5 @@ class Login extends Component {
 Login.propTypes = {
     login: PropTypes.func.isRequired
 }
-
-// TODO: Style the page with radium, make shareable input for every input in app
 
 export default (Login)
