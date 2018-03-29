@@ -76,3 +76,6 @@ export const login = (e) => {
             }).catch(err => { throw err })
     }
 }
+
+// TODO: add React-Cookie
+// TODO: Solve why API is called twice. 

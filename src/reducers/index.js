@@ -11,24 +11,22 @@ import {FAILED_TO_CREATE_USER , USER_SUCCESSFULLY_CREATED, REGISTER_USER_REQUEST
 
 // console.log('STORAGE: ', localStorage.getItem("id_token"))
 
+const initialState = { errorMessage: '', isFetching: false, user: '', message: '', content: '', isAuthenticated: false}
 
-const loginReducers = (state = {
-    isFetching: false,
-    isAuthenticated: false //!!localStorage.getItem("id_token")
-}, action) => {
+const loginReducers = (state = initialState, action) => {
     console.log('REDUCER_ACTION_TYPE: ', action.type)
 
     switch (action.type) {
-
         case LOGIN_REQUEST:
-            return Object.assign({}, state, {
+            return Object.assign({}, ...state, {
                 isFetching: true,
                 isAuthenticated: false,
-                user: action.data
+                errorMessage: '',
+                user: action.payload
             })
 
         case LOGIN_SUCCESS:
-            return Object.assign({}, state, {
+            return Object.assign({}, ...state, {
                 isFetching: false,
                 isAuthenticated: true,
                 errorMessage: ''
@@ -39,17 +37,14 @@ const loginReducers = (state = {
                 isAuthenticated: false,
                 errorMessage: action.message
             })
-
         default:
             return state
     }
 }
 
-const registerReducers = (state = {
-    isFetching: false,
-    isAuthenticated: false
-}, action) => {
+const registerReducers = (state = initialState, action) => {
     console.log('REDUCER_ACTION_TYPE: ', action.type)
+
     switch (action.type) {
         case REGISTER_USER_REQUEST:
             return Object.assign({}, state, {
