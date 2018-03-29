@@ -1,5 +1,4 @@
 import React from "react"
-import Link from 'next/link'
 import withRedux from 'next-redux-wrapper'
 import { initStore} from "../store"
 import LoginContainer from '../containers/loginContainer'

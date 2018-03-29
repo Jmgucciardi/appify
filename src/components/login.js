@@ -14,10 +14,7 @@ class Login extends Component {
             formValue: {
                 username: '',
                 password: '',
-                isAuthenticating: false,
-                signInError: false,
-                errorMessage: false,
-                notificationText: '',
+                isAuthenticating: false
             },
 
             error: {
@@ -26,7 +23,10 @@ class Login extends Component {
             },
         }
     }
-
+/**
+*  For now, just testing to see if the user left the fields blank or not, next will be confirming a valid username
+*  and password from the API call. Currently, if left blank, Validation is working and no call is made to to server
+* */
     validateForm = (body) => {
         const { error, formValue } = this.state
         const errors = this.state.error
@@ -71,7 +71,7 @@ class Login extends Component {
     }
 
 
-    render({ handleInput, handlePost, props: { hasError } } = this) {
+    render({ handleInput, handlePost } = this) {
         return (
             <div>
                 <div className="DialogContainer">
