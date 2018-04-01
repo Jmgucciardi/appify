@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import RaisedButton from 'material-ui/RaisedButton'
 
 import events from '../../events'
 import io from 'socket.io-client'
@@ -27,6 +28,7 @@ class ChatPage extends Component {
                     e.preventDefault()
                 }}>
                <p> Chat Page</p>
+
                 </form>
             </div>
         )

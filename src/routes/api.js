@@ -73,10 +73,11 @@ router.use((req, res, next) => {
 })
 
 router.post('/logout', (req, res) => {
-    if (!req.user) return res.status(500).json({error: res})
+    // if (!req.user) return res.status(500).json({error: res})
 
     req.logout()
     res.json({success: true})
+    res.redirect('/')
 })
 
 router.get('/users', (req, res) => {

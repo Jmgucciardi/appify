@@ -1,9 +1,12 @@
 import 'whatwg-fetch'
 import Router from 'next/router'
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+
+export const LOGIN_REQUEST  = 'LOGIN_REQUEST'
+export const LOGIN_SUCCESS  = 'LOGIN_SUCCESS'
+export const LOGIN_FAILURE  = 'LOGIN_FAILURE'
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 
 function requestLogin(data) {
     return {
@@ -31,6 +34,8 @@ function loginError(message) {
         message
     }
 }
+
+
 
 export const login = (e) => {
     let config = {
@@ -77,5 +82,42 @@ export const login = (e) => {
     }
 }
 
+const requestLogout = () => {
+    return {
+        type: LOGOUT_REQUEST,
+        isFetching: true,
+        isAuthenticated: false,
+    }
+}
+
+const logoutSuccess = () => {
+    return {
+        type: LOGOUT_SUCCESS,
+        isFetching: false,
+        isAuthenticated: false
+    }
+}
+
+export const logout = () => {
+    let config = {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type':'application/json'
+        }
+    }
+
+    return dispatch => {
+        dispatch(requestLogout())
+        return fetch('/api/logout', config )
+            .then(res => res.json())
+            .then(dispatch(logoutSuccess()))
+            .catch(err => {
+                throw err
+            })
+    }
+}
+
 // TODO: add React-Cookie
-// TODO: Solve why API is called twice. 
+// TODO: Solve why API is called twice.

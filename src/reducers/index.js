@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../actions/login'
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_REQUEST } from '../actions/login'
 import { HANDLE_LOCAL_STORAGE } from '../actions/chat'
 import {FAILED_TO_CREATE_USER , USER_SUCCESSFULLY_CREATED, REGISTER_USER_REQUEST} from '../actions/register'
 
@@ -13,7 +13,7 @@ import {FAILED_TO_CREATE_USER , USER_SUCCESSFULLY_CREATED, REGISTER_USER_REQUEST
 
 const initialState = { errorMessage: '', isFetching: false, user: '', message: '', content: '', isAuthenticated: false}
 
-const loginReducers = (state = initialState, action) => {
+const login_Out_Reducers = (state = initialState, action) => {
     console.log('REDUCER_ACTION_TYPE: ', action.type)
 
     switch (action.type) {
@@ -37,6 +37,12 @@ const loginReducers = (state = initialState, action) => {
                 isAuthenticated: false,
                 errorMessage: action.message
             })
+        case LOGOUT_REQUEST:
+            return Object.assign({}, state, {
+                isFetching: true,
+                isAuthenticated: false,
+                errorMessage: ''
+            })
         default:
             return state
     }
@@ -56,7 +62,7 @@ const registerReducers = (state = initialState, action) => {
         case USER_SUCCESSFULLY_CREATED:
             return Object.assign({}, state, {
                 isFetching: false,
-                isAuthenticated: false,
+                isAuthenticated: true,
                 errorMessage: ''
             })
         case FAILED_TO_CREATE_USER:
@@ -72,7 +78,7 @@ const registerReducers = (state = initialState, action) => {
 
 
 const rootReducer = combineReducers({
-    loginReducers,
+    login_Out_Reducers,
     registerReducers
 })
 
