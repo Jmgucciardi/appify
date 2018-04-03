@@ -28,27 +28,19 @@ const findUserError = (message) => {
     }
 }
 
-export const _handleConnect = () => {
+export const getUsers = () => {
     return dispatch => {
         dispatch(queryUsers())
-    return (dispatch) => {
-        fetch('api/users',
-            {
-                credentials: 'include',
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(res => res.json())
-            .then((users) =>
-                dispatch(findUserSuccess(users)))
-            .catch((err) => {
-                dispatch(findUserError(err))
-            })
-        }
-    }
+            return (dispatch) => {
+                fetch('api/users')
+                    .then(res => res.json())
+                    .then((users) =>
+                        dispatch(findUserSuccess(users)))
+                    .catch((err) => {
+                        dispatch(findUserError(err))
+                    })
+                }
+            }
 }
 
 const queryUser = () => {

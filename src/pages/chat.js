@@ -3,18 +3,25 @@ import withRedux from 'next-redux-wrapper'
 import ChatContainer from '../containers/chatContainer'
 import { initStore} from "../store"
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 class Chat extends React.Component {
 
     render() {
+        const { userAgent } = this.props
+
         return (
-            <div>
+            <MuiThemeProvider muiTheme={getMuiTheme({userAgent, darkBaseTheme})}>
                 <div>
-                   <ChatContainer />
+                    <div>
+                       <ChatContainer />
+                    </div>
                 </div>
-            </div>
+            </MuiThemeProvider>
         )
     }
 }
 
-export default withRedux(initStore)(Chat)
+export default withRedux(initStore, null, null)(Chat)

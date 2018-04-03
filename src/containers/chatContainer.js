@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Chat from '../components/chat'
-import {_handleConnect, _handleLocalStorage, _handleUsersById} from '../actions/chat'
+import {getUsers, _handleLocalStorage, _handleUsersById} from '../actions/chat'
 import {logout} from '../actions/login'
 
 
@@ -12,8 +12,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        _handleConnect: () => {
-            const action = _handleConnect()
+        getUsers: () => {
+            const action = getUsers()
             dispatch(action)
         },
         _handleUsersById: (id) => {

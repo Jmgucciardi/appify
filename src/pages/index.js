@@ -119,4 +119,4 @@ class HomePage extends React.Component {
     }
 }
 
-export default withRedux(initStore)(HomePage)
+export default withRedux(initStore, null, null)(HomePage)

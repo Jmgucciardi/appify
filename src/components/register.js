@@ -29,6 +29,10 @@ class Register extends Component {
         if (formValue.username.length === 0) {
             errors.username = 'Username is required'
         }
+        // if (this.props.checkUsername(body.username)) {
+        //     console.log('ALREADY_IN_USER: ', this.props.checkUsername(body.username))
+        //     errors.username = 'Username is already in use'
+        // }
 
         else {
             errors.username = null
@@ -42,7 +46,6 @@ class Register extends Component {
         }
 
         this.setState({ error: errors })
-        // this.props.loginFormErrors({ type: this.props.type, error: errors })    // track event
 
         return !error.username && !error.password
     }
@@ -64,6 +67,8 @@ class Register extends Component {
         e.preventDefault()
         return this.register(this.state.formValue)
     }
+
+
 
     render({ handleInput, handlePost } = this) {
         return (

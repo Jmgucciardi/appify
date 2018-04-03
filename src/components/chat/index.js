@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import UserList from './userList'
 import RaisedButton from 'material-ui/RaisedButton'
 
 import events from '../../events'
@@ -9,18 +10,8 @@ import io from 'socket.io-client'
 
 class ChatPage extends Component {
 
-    componentDidMount() {
-        if (this.props.match) {
-            const id = this.props.match.params.username
-            this.props._handleUsersById(id) // get api/username/:username
-            this.props._handleConnect() // get api/users
-            this.props._handleLocalStorage()
-        }
-    }
 
     render() {
-        this.props._handleConnect()
-        this.props._handleLocalStorage()
 
         return (
             <div>
@@ -28,6 +19,7 @@ class ChatPage extends Component {
                     e.preventDefault()
                 }}>
                <p> Chat Page</p>
+                    <UserList/>
 
                 </form>
             </div>

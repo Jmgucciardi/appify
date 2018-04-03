@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Register from '../components/register'
-import { register } from '../actions/register'
+import { register, checkUsername } from '../actions/register'
 
 function mapStateToProps(state) {
     return {
@@ -12,6 +12,9 @@ function mapDispatchToProps(dispatch) {
     return {
         register: (user) => {
             dispatch(register(user))
+        },
+        checkUsername: (username) => {
+            dispatch(checkUsername(username))
         }
     }
 }
