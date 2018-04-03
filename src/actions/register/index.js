@@ -10,20 +10,13 @@ export const USER_NAME_IN_USE          = 'USER_NAME_IN_USE'
 const registerError = (message) => {
     return {
         type: FAILED_TO_CREATE_USER,
-        message
+        message: message
     }
 }
 
 export const registerSuccess = (users) =>{
     return {
         type: USER_SUCCESSFULLY_CREATED,
-        value: users
-    }
-}
-
-export const usersLoaded = (users) => {
-    return {
-        type: USER_LOADED_SUCCESS,
         value: users
     }
 }
@@ -88,6 +81,7 @@ const alreadyInUse = (data) => {
         type: USER_NAME_IN_USE,
         isFetching: false,
         isAuthenticated: false,
+        message: 'Username Already In Use',
         data
     }
 }
@@ -103,7 +97,7 @@ export const checkUsername = (e) => {
     }
     return dispatch => {
         dispatch(fetchUserNames(e))
-        fetch(`/api/username/${e}`, config)
+        return fetch(`/api/username/${e}`, config)
             .then(res => res.json())
             .then(res => {
                 dispatch(alreadyInUse(e))

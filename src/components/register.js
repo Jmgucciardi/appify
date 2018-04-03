@@ -29,10 +29,10 @@ class Register extends Component {
         if (formValue.username.length === 0) {
             errors.username = 'Username is required'
         }
-        // if (this.props.checkUsername(body.username)) {
-        //     console.log('ALREADY_IN_USER: ', this.props.checkUsername(body.username))
-        //     errors.username = 'Username is already in use'
-        // }
+        else if (this.props.checkUsername(body.username)) {
+            console.log('ALREADY_IN_USER: ', this.props.checkUsername(body.username))
+            errors.username = 'Username is already in use'
+        }
 
         else {
             errors.username = null
