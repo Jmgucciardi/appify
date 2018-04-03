@@ -41,36 +41,36 @@ router.post('/authenticate', passport.authenticate('local-login'), (req, res) =>
 })
 
 // verify the token
-router.use((req, res, next) => {
-    let token = req.body.token || req.query.token || req.headers['x-access-token']
-    token = token.replace('Bearer ', '')
-    // decode token
-    if (token) {
-
-        // verifies secret and checks exp
-        jwt.verify(token, app.get('appSecret'), (err, decoded) => {
-            if (err) {
-                console.log('FAILED_TO_VERIFY_TOKEN')
-                return res.json({ success: false, message: 'Failed to authenticate token.' })
-            } else {
-                // if everything is good, save to request for use in other routes
-                console.log('VERIFY_TOKEN_API: SUCCESS')
-                req.decoded = decoded
-                next()
-            }
-        })
-
-    } else {
-        console.log('NO_TOKEN_FOUND')
-
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        })
-    }
-})
+// router.use((req, res, next) => {
+//     let token = req.body.token || req.query.token || req.headers['x-access-token']
+//     token = token.replace('Bearer ', '')
+//     // decode token
+//     if (token) {
+//
+//         // verifies secret and checks exp
+//         jwt.verify(token, app.get('appSecret'), (err, decoded) => {
+//             if (err) {
+//                 console.log('FAILED_TO_VERIFY_TOKEN')
+//                 return res.json({ success: false, message: 'Failed to authenticate token.' })
+//             } else {
+//                 // if everything is good, save to request for use in other routes
+//                 console.log('VERIFY_TOKEN_API: SUCCESS')
+//                 req.decoded = decoded
+//                 next()
+//             }
+//         })
+//
+//     } else {
+//         console.log('NO_TOKEN_FOUND')
+//
+//         // if there is no token
+//         // return an error
+//         return res.status(403).send({
+//             success: false,
+//             message: 'No token provided.'
+//         })
+//     }
+// })
 
 router.post('/logout', (req, res) => {
     // if (!req.user) return res.status(500).json({error: res})
@@ -93,22 +93,21 @@ router.get('/users', (req, res) => {
 })
 
 router.get('/username/:username', (req, res) => {
-    req.params.username = req.params.username.toLowerCase();
+    req.params.username = req.params.username.toLowerCase()
 
-    models.User.findOne({'local.username': req.params.username}, (err, user) => {
-        if (err) {
-            return res.status(500).json({error: true});
+    models.User.findOne(
+        { 'local.username': req.params.username },
+        (err, user) => {
+            if (err) {
+                return res.status(500).json({ error: true })
+            }
+
+            return res.json({
+                alreadyInUse: !!user,
+                user: req.params.username
+            })
         }
-        const username = user.local.username
-        const onlineStatus = user.local.online
-
-        return res.json({
-            alreadyInUse: !!user,
-            user: username,
-            online: onlineStatus
-
-        })
-    })
+    )
 })
 
 router.get('/user/channels', (req, res) => {

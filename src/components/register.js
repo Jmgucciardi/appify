@@ -9,6 +9,7 @@ class Register extends Component {
 
         this.state = {
             dialogActive: false,
+            registerError: false,
             formValue: {
                 username: '',
                 password: '',
@@ -16,6 +17,7 @@ class Register extends Component {
             },
 
             error: {
+                validName: null,
                 username: null,
                 password: null,
             },
@@ -26,12 +28,9 @@ class Register extends Component {
         const { error, formValue } = this.state
         const errors = this.state.error
 
+
         if (formValue.username.length === 0) {
             errors.username = 'Username is required'
-        }
-        else if (this.props.checkUsername(body.username)) {
-            console.log('ALREADY_IN_USER: ', this.props.checkUsername(body.username))
-            errors.username = 'Username is already in use'
         }
 
         else {
@@ -68,7 +67,20 @@ class Register extends Component {
         return this.register(this.state.formValue)
     }
 
-
+    checkUsername = () => {
+        fetch(`/api/username/${this.state.formValue.username}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                this.setState({ registerError: res.alreadyInUse })
+            })
+            .catch(() => {})
+    }
 
     render({ handleInput, handlePost } = this) {
         return (
@@ -82,7 +94,10 @@ class Register extends Component {
                                id='username'
                                onKeyUp={handleInput}
                                onChange={(e) => this.handleInput(e)}
-                               errorText={this.state.error.username}
+                               onBlur={this.checkUsername}
+                               errorText={
+                                   this.state.error.username ? this.state.error.username : null || this.state.registerError ? 'Username already in use' : null
+                               }
                         />
 
                         <Input type="password" name="password" className="StandardInput" placeholder="Password..."

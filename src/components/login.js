@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import RaisedButton from 'material-ui/RaisedButton'
 import Input from 'material-ui/TextField'
 
-import { withStyles } from 'material-ui/styles';
-
 class Login extends Component {
     constructor() {
         super()
@@ -48,7 +46,6 @@ class Login extends Component {
         }
 
         this.setState({ error: errors })
-       // this.props.loginFormErrors({ type: this.props.type, error: errors })    // track event
 
         return !error.username && !error.password
     }

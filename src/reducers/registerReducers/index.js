@@ -32,7 +32,6 @@ const registerReducers = (state = initialState, action) => {
                 errorMessage: action.message
             })
 
-
         default:
             return state
     }
