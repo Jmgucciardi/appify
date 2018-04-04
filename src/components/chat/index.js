@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import UserList from './userList'
+import cookie from 'react-cookie'
 import RaisedButton from 'material-ui/RaisedButton'
 
 import events from '../../events'
@@ -8,8 +8,29 @@ import io from 'socket.io-client'
 
 // webstorm auto-magically generated the import statement above, keeping it until I know props will handle the call
 
-class ChatPage extends Component {
 
+
+class ChatPage extends Component {
+    constructor(props) {
+        super(props)
+
+        this.persistentActiveChannelIdentifier = 'activeChannel'
+        this.persistentActiveUserIdentifier = 'activeUser'
+        this.persistentLoggedUserIdentifier = 'loggedUser'
+
+        this.state = {
+            users: {},
+            channels: {},
+            activeChannel: null,
+            activeUser: null,
+            loggedUser: null,
+            isConnecting: true,
+            isConnected: false,
+            isDisconnectedByClient: false,
+        }
+
+
+    }
 
     render() {
 
@@ -19,8 +40,6 @@ class ChatPage extends Component {
                     e.preventDefault()
                 }}>
                <p> Chat Page</p>
-                    <UserList/>
-
                 </form>
             </div>
         )

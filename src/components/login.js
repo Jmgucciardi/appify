@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import RaisedButton from 'material-ui/RaisedButton'
 import Input from 'material-ui/TextField'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+
+// TODO: new text color theme, errors should all be red.
+
 
 class Login extends Component {
     constructor() {
@@ -18,31 +23,38 @@ class Login extends Component {
             error: {
                 username: null,
                 password: null,
+                unAuthorized: null,
             },
         }
     }
-/**
-*  For now, just testing to see if the user left the fields blank or not, next will be confirming a valid username
-*  and password from the API call. Currently, if left blank, Validation is working and no call is made to to server
-* */
-
+    
     validateForm = (body) => {
         const { error, formValue } = this.state
         const errors = this.state.error
+        const isVerified = this.props.login(body)
+        const usernameLength = formValue.username.length
+        const passwordLength = formValue.password.length
 
-        if (formValue.username.length === 0) {
+        if (usernameLength === 0) {
             errors.username = 'Username is blank'
         }
 
         else {
             errors.username = null
         }
-        if (formValue.password.length === 0) {
+        if (passwordLength === 0) {
             errors.password = 'Password is blank'
         }
 
         else {
             errors.password = null
+        }
+
+        if (isVerified === undefined && usernameLength !== 0 && passwordLength !== 0) {
+            errors.unAuthorized = 'Invalid Username or Password'
+            this.setState({
+                dialogActive: true
+            })
         }
 
         this.setState({ error: errors })
@@ -54,6 +66,7 @@ class Login extends Component {
     login = (data) => {
         if (this.validateForm(data)) {
             this.setState({ loading: true })
+
             return this.props.login(data)
         }
     }
@@ -67,12 +80,36 @@ class Login extends Component {
         return this.login(this.state.formValue)
     }
 
+    handleRequestClose = () => {
+        this.setState({
+            dialogActive: false
+        })
+    }
+
 
     render({ handleInput, handlePost } = this) {
+        const standardActions = (
+            <FlatButton
+                label='Ok'
+                primary={Boolean(true)}
+                onTouchTap={this.handleRequestClose}
+            />
+
+        )
         return (
             <div>
                 <div className="DialogContainer">
                     <div className="Dialog">
+                        <Dialog
+                            contentStyle={customContentStyle}
+                            open={this.state.dialogActive}
+                            title='Oops!'
+                            actions={standardActions}
+                            onRequestClose={this.handleRequestClose}
+                        >
+                            {this.state.error.unAuthorized}
+
+                        </Dialog>
                         <form onSubmit={e => {
                             e.preventDefault()
                         }}>
