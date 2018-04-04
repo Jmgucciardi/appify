@@ -27,11 +27,10 @@ class Login extends Component {
             },
         }
     }
-    
+
     validateForm = (body) => {
         const { error, formValue } = this.state
         const errors = this.state.error
-        const isVerified = this.props.login(body)
         const usernameLength = formValue.username.length
         const passwordLength = formValue.password.length
 
@@ -50,12 +49,6 @@ class Login extends Component {
             errors.password = null
         }
 
-        if (isVerified === undefined && usernameLength !== 0 && passwordLength !== 0) {
-            errors.unAuthorized = 'Invalid Username or Password'
-            this.setState({
-                dialogActive: true
-            })
-        }
 
         this.setState({ error: errors })
 
@@ -67,7 +60,16 @@ class Login extends Component {
         if (this.validateForm(data)) {
             this.setState({ loading: true })
 
-            return this.props.login(data)
+            if (this.props.login(data)) {
+                return this.props.login(data)
+            }
+            else {
+                this.state.error.unAuthorized = 'Invalid Username or Password'
+                this.setState({
+                    dialogActive: true
+                })
+
+            }
         }
     }
 
@@ -101,7 +103,6 @@ class Login extends Component {
                 <div className="DialogContainer">
                     <div className="Dialog">
                         <Dialog
-                            contentStyle={customContentStyle}
                             open={this.state.dialogActive}
                             title='Oops!'
                             actions={standardActions}

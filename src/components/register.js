@@ -85,7 +85,6 @@ class Register extends Component {
     render({ handleInput, handlePost } = this) {
         return (
             <div className="RegisterContainer">
-                <p> Create An Account</p>
                 <div className="RegisterForm">
                     <form onSubmit={e => {
                         e.preventDefault()
