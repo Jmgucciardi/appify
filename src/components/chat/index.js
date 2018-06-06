@@ -29,17 +29,19 @@ class ChatPage extends Component {
             isDisconnectedByClient: false,
         }
 
-
+    const user = this.props.getUsers()
+        console.log('GET USERS: ', this.props.getUsers())
+        console.log('USERS RECIEVED: ', user)
     }
 
     render() {
-
         return (
             <div>
                 <form onSubmit={e => {
                     e.preventDefault()
                 }}>
-               <p> Chat Page</p>
+               <h1> Chat Page</h1>
+                    <p>you have logged in and can now see this content, of which there is none at the moment</p>
                 </form>
             </div>
         )

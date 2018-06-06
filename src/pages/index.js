@@ -74,6 +74,12 @@ class HomePage extends React.Component {
         })
     }
 
+    openOnClick = () => {
+        this.setState({
+            open: true
+        })
+    }
+
     render() {
 
         const { userAgent } = this.props
@@ -82,7 +88,7 @@ class HomePage extends React.Component {
             <FlatButton
                 label='Go Back'
                 primary={Boolean(true)}
-                onTouchTap={this.handleRequestClose}
+                onClick={this.handleRequestClose}
             />
 
         )
@@ -96,7 +102,7 @@ class HomePage extends React.Component {
                                 open={this.state.open}
                                 title='Register'
                                 actions={standardActions}
-                                onRequestClose={this.handleRequestClose}
+                                onClick={this.handleRequestClose}
                                  >
 
                                 <RegisterContainer/>
@@ -108,7 +114,7 @@ class HomePage extends React.Component {
                         <RaisedButton
                             label="Register"
                             secondary
-                            onTouchTap={this.handleTouchTap}>
+                            onClick={this.openOnClick}>
                         </RaisedButton>
                     </div>
                     <p> or </p>

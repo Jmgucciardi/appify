@@ -83,7 +83,9 @@ router.post('/logout', (req, res) => {
 router.get('/users', (req, res) => {
    // if (!req.user) return res.status(401).end()
 
-    models.User.find({}, {'local.username': 1, 'local.online': 1, _id: 0}, (err, users) => {
+    // 'local.online': 1, _id: 0
+
+    models.User.find({'local.username': req.params.username}, (err, users) => {
         if (err) {
             return res.status(500).json({error: true})
         }

@@ -14,10 +14,12 @@ class Login extends Component {
 
         this.state = {
             dialogActive: false,
+            isAuthenticating: false,
             formValue: {
                 username: '',
+                usernameField: '',
                 password: '',
-                isAuthenticating: false
+                passwordField: ''
             },
 
             error: {
@@ -113,6 +115,7 @@ class Login extends Component {
                         </Dialog>
                         <form onSubmit={e => {
                             e.preventDefault()
+
                         }}>
                             <Input type="text" name="username" className="StandardInput" placeholder="Username..."
                                id='username'
